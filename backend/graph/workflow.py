@@ -90,6 +90,16 @@ def save_report_node(state):
         "report_path": report_path
     }
 
+def summary_node(state):
+
+    summary = generate_summary(
+        state["report"]
+    )
+
+    return {
+        "summary": summary
+    }
+
 
 graph = StateGraph(
     InvestigationState

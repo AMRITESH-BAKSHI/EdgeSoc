@@ -16,3 +16,5 @@ class InvestigationState(TypedDict):
     report: dict
 
     report_path: str
+
+    summary: str
