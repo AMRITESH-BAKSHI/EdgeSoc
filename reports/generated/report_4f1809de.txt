@@ -1,0 +1,30 @@
+
+====================================
+EDGE SOC INVESTIGATION REPORT
+====================================
+
+Attack Type:
+brute_force
+
+Severity:
+medium
+
+Source IP:
+192.168.1.10
+
+Evidence Count:
+3
+
+Indicators of Compromise:
+192.168.1.10
+
+MITRE ATT&CK:
+T1110 - Brute Force
+
+Investigation Status:
+Completed
+
+Generated At:
+2026-06-07 02:18:24
+
+====================================
