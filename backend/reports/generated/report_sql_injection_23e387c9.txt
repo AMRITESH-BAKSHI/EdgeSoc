@@ -1,0 +1,34 @@
+
+====================================
+EDGE SOC INVESTIGATION REPORT
+====================================
+
+EXECUTIVE SUMMARY
+------------------------------------
+
+In our recent incident analysis, we identified a high-severity vulnerability in an application that could potentially lead to unauthorized access. The attack vector was detected as SQL injection, which is classified as T1190 by MITRE. This exploit has been publicly documented and poses significant risks if exploited. Our investigation revealed only one instance of this type of attack, with the source IP address unknown. This incident underscores the importance of robust input validation and sanitization practices to mitigate such threats effectively.
+
+====================================
+
+INVESTIGATION DETAILS
+
+Attack Type:
+sql_injection
+
+Severity:
+high
+
+Source IP:
+unknown
+
+Evidence Count:
+1
+
+Indicators of Compromise:
+
+
+MITRE ATT&CK:
+T1190 -
+Exploit Public-Facing Application
+
+====================================

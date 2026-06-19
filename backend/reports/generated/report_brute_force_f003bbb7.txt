@@ -1,0 +1,34 @@
+
+====================================
+EDGE SOC INVESTIGATION REPORT
+====================================
+
+EXECUTIVE SUMMARY
+------------------------------------
+
+The cybersecurity executive summary indicates that a brute force attack was attempted using source IP address 127.0.0.1, with no evidence of successful exploitation or further activity detected. This incident is categorized as medium severity due to its potential for unauthorized access and compromise. The technique involved is identified by MITRE as T1110 under the Brute Force category, suggesting a common method used in cyber-attacks.
+
+====================================
+
+INVESTIGATION DETAILS
+
+Attack Type:
+brute_force
+
+Severity:
+medium
+
+Source IP:
+127.0.0.1
+
+Evidence Count:
+0
+
+Indicators of Compromise:
+
+
+MITRE ATT&CK:
+T1110 -
+Brute Force
+
+====================================

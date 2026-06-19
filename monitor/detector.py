@@ -9,7 +9,7 @@ from alert_generator import generate_alert
 
 
 def read_logs():
-    with open("logs/sample.log", "r") as file:
+    with open("logs/website.log", "r") as file:
         return file.readlines()
 
 def detect_sql_injection(logs):
