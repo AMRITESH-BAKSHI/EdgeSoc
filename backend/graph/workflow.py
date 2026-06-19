@@ -15,6 +15,7 @@ from backend.reports.report_builder import (
     save_report
 )
 from backend.services.alert_manager import mark_alert_processed
+from backend.agents.summary_agent import generate_summary
 
 def coordinator_node(state: InvestigationState):
 
@@ -78,7 +79,9 @@ def report_node(state: InvestigationState):
 def save_report_node(state):
 
     human_report = build_human_report(
-        state["report"]
+        state["report"],
+        state["summary"]
+
     )
 
     report_path = save_report(
@@ -135,6 +138,10 @@ graph.add_node(
     "save_report",
     save_report_node
 )
+graph.add_node(
+    "summary_agent",
+    summary_node
+)
 
 graph.set_entry_point(
     "coordinator"
@@ -162,6 +169,11 @@ graph.add_edge(
 
 graph.add_edge(
     "report_agent",
+    "summary_agent"
+)
+
+graph.add_edge(
+    "summary_agent",
     "save_report"
 )
 

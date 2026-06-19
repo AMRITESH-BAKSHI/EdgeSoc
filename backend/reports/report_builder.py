@@ -10,12 +10,21 @@ REPORTS_DIR = os.path.join(
     BASE_DIR,
     "generated"
 )
-def build_human_report(report):
+def build_human_report(report,summary):
 
     report_text = f"""
 ====================================
 EDGE SOC INVESTIGATION REPORT
 ====================================
+
+EXECUTIVE SUMMARY
+------------------------------------
+
+{summary}
+
+====================================
+
+INVESTIGATION DETAILS
 
 Attack Type:
 {report['attack_type']}
@@ -33,13 +42,8 @@ Indicators of Compromise:
 {", ".join(report['iocs']['ips'])}
 
 MITRE ATT&CK:
-{report['mitre']['technique_id']} - {report['mitre']['technique_name']}
-
-Investigation Status:
-Completed
-
-Generated At:
-{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+{report['mitre']['technique_id']} -
+{report['mitre']['technique_name']}
 
 ====================================
 """

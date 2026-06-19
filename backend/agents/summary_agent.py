@@ -33,8 +33,8 @@ Keep the response professional and under 100 words.
     payload = {
         "model": "qwen2.5:1.5b",
         "prompt": prompt,
-        "stream": False
-        "options":("temperature":0)
+        "stream": False,
+        "options":{"temperature":0}
     }
 
     response = requests.post(

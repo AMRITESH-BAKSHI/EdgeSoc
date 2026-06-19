@@ -1,0 +1,34 @@
+
+====================================
+EDGE SOC INVESTIGATION REPORT
+====================================
+
+EXECUTIVE SUMMARY
+------------------------------------
+
+A Distributed Denial of Service (DDoS) attack targeting a source IP address of 192.168.1.20 has been detected, with evidence count reaching five instances. This incident is associated with MITRE Technique T1498, commonly known as Network Denial of Service, indicating an attempt to disrupt network service availability through traffic manipulation.
+
+====================================
+
+INVESTIGATION DETAILS
+
+Attack Type:
+ddos
+
+Severity:
+high
+
+Source IP:
+192.168.1.20
+
+Evidence Count:
+5
+
+Indicators of Compromise:
+192.168.1.20
+
+MITRE ATT&CK:
+T1498 -
+Network Denial of Service
+
+====================================
