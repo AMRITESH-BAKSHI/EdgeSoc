@@ -1,0 +1,12 @@
+{
+    "alert_id": "ALT-718a839c",
+    "attack_type": "sql_injection",
+    "severity": "high",
+    "source_ip": "unknown",
+    "evidence": {
+        "matched_pattern": "' OR 1=1",
+        "log_line": "[2026-06-19T20:47:51.333Z] SQL_QUERY query=' OR 1=1 --"
+    },
+    "timestamp": "2026-06-29 15:19:24",
+    "processed": true
+}

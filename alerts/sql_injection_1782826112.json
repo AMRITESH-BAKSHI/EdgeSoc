@@ -1,0 +1,9 @@
+{
+    "alert_id": "ALT-4168c08a",
+    "attack_type": "sql_injection",
+    "severity": "high",
+    "source_ip": "192.168.1.45",
+    "evidence": "SELECT * FROM users WHERE '1'='1'",
+    "timestamp": "2026-06-30 18:58:32",
+    "processed": true
+}

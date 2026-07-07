@@ -1,0 +1,9 @@
+{
+    "alert_id": "ALT-9cb9aa6c",
+    "attack_type": "ddos",
+    "severity": "high",
+    "source_ip": "10.0.0.99",
+    "evidence": "Rate limit exceeded: 5000 req/sec",
+    "timestamp": "2026-06-30 18:58:32",
+    "processed": true
+}
