@@ -1,11 +1,11 @@
 {
-    "alert_id": "ALT-6ed6f1eb",
+    "alert_id": "ALT-1c423936",
     "attack_type": "brute_force",
     "severity": "medium",
     "source_ip": "127.0.0.1",
     "evidence": {
-        "failed_attempts": 8
+        "failed_attempts": 4
     },
-    "timestamp": "2026-06-20 02:18:41",
+    "timestamp": "2026-06-20 11:23:43",
     "processed": true
 }
