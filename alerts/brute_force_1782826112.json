@@ -1,0 +1,9 @@
+{
+    "alert_id": "ALT-7cc5e1b5",
+    "attack_type": "brute_force",
+    "severity": "medium",
+    "source_ip": "172.16.5.12",
+    "evidence": "Failed login attempts: 15",
+    "timestamp": "2026-06-30 18:58:32",
+    "processed": true
+}

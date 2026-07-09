@@ -1,0 +1,34 @@
+
+====================================
+EDGE SOC INVESTIGATION REPORT
+====================================
+
+EXECUTIVE SUMMARY
+------------------------------------
+
+In this cybersecurity assessment, we identified a high-severity vulnerability in an application that employs SQL injection. The source IP address of the attacker is 192.168.1.45, indicating a public-facing environment. Evidence suggests 304 instances of the exploit technique T1190, which targets publicly accessible applications. This finding underscores the critical need for immediate remediation to prevent potential data breaches and unauthorized access.
+
+====================================
+
+INVESTIGATION DETAILS
+
+Attack Type:
+sql_injection
+
+Severity:
+high
+
+Source IP:
+192.168.1.45
+
+Evidence Count:
+304
+
+Indicators of Compromise:
+
+
+MITRE ATT&CK:
+T1190 -
+Exploit Public-Facing Application
+
+====================================

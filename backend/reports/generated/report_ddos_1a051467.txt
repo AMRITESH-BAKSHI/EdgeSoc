@@ -1,0 +1,34 @@
+
+====================================
+EDGE SOC INVESTIGATION REPORT
+====================================
+
+EXECUTIVE SUMMARY
+------------------------------------
+
+The cybersecurity executive summary indicates a high-severity Distributed Denial of Service (DDoS) attack originating from an internal source IP address, with evidence count at 52. This incident is associated with the MITRE Technique T1498, which pertains to Network Denial of Service attacks.
+
+====================================
+
+INVESTIGATION DETAILS
+
+Attack Type:
+ddos
+
+Severity:
+high
+
+Source IP:
+127.0.0.1
+
+Evidence Count:
+52
+
+Indicators of Compromise:
+127.0.0.1
+
+MITRE ATT&CK:
+T1498 -
+Network Denial of Service
+
+====================================

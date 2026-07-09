@@ -1,0 +1,34 @@
+
+====================================
+EDGE SOC INVESTIGATION REPORT
+====================================
+
+EXECUTIVE SUMMARY
+------------------------------------
+
+In our recent cybersecurity assessment, we identified a significant vulnerability in an application that could potentially lead to unauthorized access. The attack type detected is SQL injection, which poses a high risk due to its ability to compromise sensitive data. The source IP remains unknown, but evidence suggests this incident occurred through 154 attempts. This finding aligns with the MITRE Technique T1190, specifically targeting Exploit Public-Facing Application, indicating an external threat vector.
+
+====================================
+
+INVESTIGATION DETAILS
+
+Attack Type:
+sql_injection
+
+Severity:
+high
+
+Source IP:
+unknown
+
+Evidence Count:
+154
+
+Indicators of Compromise:
+
+
+MITRE ATT&CK:
+T1190 -
+Exploit Public-Facing Application
+
+====================================

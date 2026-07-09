@@ -32,7 +32,7 @@ def log_node(state: InvestigationState):
 
     evidence = collect_relevant_logs(
         state["alert"],
-        "logs/sample.log"
+        "logs/website.log"
     )
 
     return {
