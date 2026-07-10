@@ -1,9 +1,0 @@
-{
-    "alert_id": "ALT-c4069ccc",
-    "attack_type": "brute_force",
-    "severity": "medium",
-    "source_ip": "172.16.5.12",
-    "evidence": "Failed login attempts: 15",
-    "timestamp": "2026-06-30 18:58:29",
-    "processed": true
-}

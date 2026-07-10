@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from monitor.detection_state import clear_ip
 from backend.services.alert_loader import (
     load_unprocessed_alerts
 )
@@ -28,8 +29,10 @@ def investigate():
             }
         )
 
-        mark_alert_processed(
-            filepath
+        mark_alert_processed(filepath)
+
+        clear_ip(
+        alert["source_ip"]
         )
 
         processed_count += 1

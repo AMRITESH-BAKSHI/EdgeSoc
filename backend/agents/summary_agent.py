@@ -1,50 +1,65 @@
 import requests
 
-
-OLLAMA_URL = "http://localhost:11434/api/generate"
+OLLAMA_URL = "http://localhost:11434/api/chat"
 
 
 def generate_summary(report):
 
-    prompt = f"""
-You are a cybersecurity analyst.
-
-Generate a cybersecurity executive summary.
-
-Use ONLY the information provided.
-
-Do NOT invent facts.
-Do NOT speculate.
-Do NOT mention impacts that are not provided.
-Do NOT provide recommendations.
-
-Write 3-5 professional sentences.
+    messages = [
+        {
+            "role": "system",
+            "content": (
+                "You are a Security Operations Center (SOC) analyst.\n"
+                "You are generating reports for a simulated university cybersecurity laboratory.\n\n"
+                "Rules:\n"
+                "- Use ONLY the information provided.\n"
+                "- Never invent facts.\n"
+                "- Never speculate.\n"
+                "- Never mention impacts unless explicitly provided.\n"
+                "- Never provide recommendations.\n"
+                "- Write exactly 3 professional sentences."
+            )
+        },
+        {
+            "role": "user",
+            "content": f"""
+Generate an executive summary for the following incident.
 
 Attack Type: {report['attack_type']}
 Severity: {report['severity']}
 Source IP: {report['source_ip']}
 Evidence Count: {report['evidence_count']}
-MITRE Technique: {report['mitre']['technique_id']}
-MITRE Name: {report['mitre']['technique_name']}
-
-Keep the response professional and under 100 words.
+MITRE Technique ID: {report['mitre']['technique_id']}
+MITRE Technique Name: {report['mitre']['technique_name']}
 """
+        }
+    ]
 
     payload = {
-        "model": "qwen2.5:1.5b",
-        "prompt": prompt,
+        "model": "llama3.2:1b",
+        "messages": messages,
         "stream": False,
-        "options":{"temperature":0}
+        "options": {
+            "temperature": 0,
+            "num_ctx": 2048
+        }
     }
 
-    response = requests.post(
-        OLLAMA_URL,
-        json=payload
-    )
+    try:
+        response = requests.post(
+            OLLAMA_URL,
+            json=payload,
+            timeout=60
+        )
 
-    result = response.json()
+        response.raise_for_status()
 
-    return result["response"]
+        result = response.json()
+
+        return result["message"]["content"].strip()
+
+    except Exception as e:
+        return f"Summary generation failed: {e}"
 
 
 if __name__ == "__main__":
@@ -60,8 +75,10 @@ if __name__ == "__main__":
         }
     }
 
-    print(
-        generate_summary(
-            sample_report
-        )
-    )
+    print("\n==============================")
+    print(" EDGE SOC - SUMMARY AGENT")
+    print("==============================\n")
+
+    summary = generate_summary(sample_report)
+
+    print(summary)

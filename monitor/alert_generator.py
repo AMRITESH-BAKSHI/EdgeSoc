@@ -33,6 +33,7 @@ def generate_alert(
         json.dump(alert, f, indent=4)
 
     print(f"[ALERT GENERATED] {filename}")
+    print("ALERT_CREATED")
 
 if __name__ == "__main__":
     generate_alert("sql_injection", "high", "192.168.1.45", "SELECT * FROM users WHERE '1'='1'")
