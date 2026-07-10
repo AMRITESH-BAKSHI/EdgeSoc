@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from backend.routes.detect import router as detect_router
 from backend.routes.alerts import router as alerts_router
 from backend.routes.investigate import router as investigate_router
 from backend.routes.reports import router as reports_router
@@ -25,7 +25,7 @@ app.include_router(investigate_router)
 app.include_router(alerts_router)
 app.include_router(reports_router)
 app.include_router(health_router)
-
+app.include_router(detect_router)
 @app.get("/")
 def home():
     return {

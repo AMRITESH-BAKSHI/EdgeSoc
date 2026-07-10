@@ -1,0 +1,11 @@
+{
+    "alert_id": "ALT-f8d87955",
+    "attack_type": "brute_force",
+    "severity": "medium",
+    "source_ip": "127.0.0.1",
+    "evidence": {
+        "failed_attempts": 3
+    },
+    "timestamp": "2026-07-10 16:05:23",
+    "processed": true
+}
