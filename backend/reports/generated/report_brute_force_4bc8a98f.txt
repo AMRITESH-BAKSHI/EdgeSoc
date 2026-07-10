@@ -1,0 +1,36 @@
+
+====================================
+EDGE SOC INVESTIGATION REPORT
+====================================
+
+EXECUTIVE SUMMARY
+------------------------------------
+
+Here is a professional executive summary for the given incident:
+
+An incident was reported in which an attacker exploited a brute-force attack, utilizing a source IP address of 127.0.0.1 to launch a cyberattack. The incident occurred on multiple occasions, resulting in three evidence counts and a medium severity rating. This incident highlights the importance of implementing robust security measures to prevent such attacks from compromising university networks.
+
+====================================
+
+INVESTIGATION DETAILS
+
+Attack Type:
+brute_force
+
+Severity:
+medium
+
+Source IP:
+127.0.0.1
+
+Evidence Count:
+3
+
+Indicators of Compromise:
+127.0.0.1
+
+MITRE ATT&CK:
+T1110 -
+Brute Force
+
+====================================

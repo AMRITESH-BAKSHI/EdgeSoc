@@ -1,18 +1,18 @@
-from detection_state import load_state, save_state
+from monitor.detection_state import load_state, save_state
 import os
-from checkpoint import (
+from monitor.checkpoint import (
     load_checkpoint,
     save_checkpoint,
     CHECKPOINT_FILE
 )
-from rules import (
+from monitor.rules import (
     SQL_PATTERNS,
     BRUTE_FORCE_THRESHOLD,
     DDOS_THRESHOLD
 )
 
-from parser import extract_ip
-from alert_generator import generate_alert
+from monitor.parser import extract_ip
+from monitor.alert_generator import generate_alert
 
 
 # -----------------------------
@@ -82,7 +82,8 @@ def detect_sql_injection(logs):
                     }
                 )
 
-                return
+                return True
+    return False;
 
 
 # -----------------------------
@@ -105,9 +106,10 @@ def detect_brute_force(logs):
 
         if ip is None:
             continue
+        print(f"Loaded state: {state}")
 
         failed_logins[ip] = failed_logins.get(ip, 0) + 1
-
+        print(f"IP={ip}, Count={failed_logins[ip]}")
         if (
             failed_logins[ip] >= BRUTE_FORCE_THRESHOLD
             and ip not in active_alerts
@@ -125,8 +127,11 @@ def detect_brute_force(logs):
             )
 
             active_alerts[ip] = True
+            save_state(state)
+            return True
 
     save_state(state)
+    return False
 
 
 # -----------------------------
@@ -162,18 +167,25 @@ def detect_ddos(logs):
                     "request_count": count
                 }
             )
-
+            return True
+    return False
 
 # -----------------------------
 # Main
 # -----------------------------
-def main():
+def run_detection():
 
     logs = read_logs()
 
-    detect_sql_injection(logs)
-    detect_brute_force(logs)
-    detect_ddos(logs)
+    sql_alert = detect_sql_injection(logs)
+    brute_alert = detect_brute_force(logs)
+    ddos_alert = detect_ddos(logs)
+
+    return sql_alert or brute_alert or ddos_alert
+
+
+def main():
+    run_detection()
 
 
 if __name__ == "__main__":

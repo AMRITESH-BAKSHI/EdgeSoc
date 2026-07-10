@@ -25,41 +25,20 @@ export async function POST(request: Request) {
   );
 
   // Run detector automatically
-  exec(
-  "python ../monitor/detector.py",
-  async (error, stdout, stderr) => {
+ try {
 
-    if (error) {
-      console.error(stderr);
-      return;
-    }
+    await fetch(
+        "http://127.0.0.1:8000/detect",
+        {
+            method: "POST"
+        }
+    );
 
-    console.log(stdout);
+} catch (err) {
 
-    if (stdout.includes("ALERT_CREATED")) {
+    console.error(err);
 
-      console.log("New alert detected. Starting investigation...");
-
-      try {
-
-        await fetch(
-          "http://127.0.0.1:8000/investigate"
-        );
-
-      } catch (err) {
-
-        console.error(err);
-
-      }
-
-    } else {
-
-      console.log("No new alert. Investigation skipped.");
-
-    }
-
-  }
-);
+}
 
   return NextResponse.json({
     success: true
