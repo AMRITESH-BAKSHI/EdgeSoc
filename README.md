@@ -1,622 +1,316 @@
 # EdgeSOC
 
-## Multi-Agent Autonomous Security Investigation Platform
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
+![Next.js](https://img.shields.io/badge/Next.js-Frontend-black)
+![LangGraph](https://img.shields.io/badge/LangGraph-Multi--Agent-orange)
+![Llama](https://img.shields.io/badge/Llama-3.2%201B-purple)
 
-EdgeSOC is an AI-powered Security Operations Center (SOC) assistant that automatically investigates cybersecurity alerts using a multi-agent architecture built with LangGraph.
+> **AI-Powered Multi-Agent Autonomous Security Investigation Platform
+> for Edge Devices**
 
-The platform is designed to run locally and eventually be deployed on NVIDIA Jetson edge devices.
+EdgeSOC is an autonomous Security Operations Center (SOC) platform that
+detects cyber attacks, generates structured alerts, automatically
+investigates incidents using a LangGraph multi-agent workflow, maps
+attacks to the MITRE ATT&CK framework, generates AI-powered executive
+summaries using **Llama 3.2 (1B)** running locally with Ollama, and
+presents the results through a modern Next.js dashboard.
 
----
+------------------------------------------------------------------------
 
-# Current Project Status
+# Features
 
-## Completed Features
+-   Incremental log monitoring using checkpoints
+-   Persistent detection state
+-   Brute Force detection
+-   SQL Injection detection
+-   DDoS detection
+-   Automatic JSON alert generation
+-   FastAPI backend APIs
+-   LangGraph multi-agent investigation
+-   MITRE ATT&CK mapping
+-   AI executive summaries (Llama 3.2 via Ollama)
+-   Automated report generation
+-   Next.js dashboard
+-   Alert lifecycle management
 
-### Detection Engine
+------------------------------------------------------------------------
 
-Detects:
+# Architecture
 
-* SQL Injection
-* Brute Force Attacks
-* DDoS Attacks
-
----
-
-### Alert Generation
-
-Generates structured alert files in JSON format.
-
-Example:
-
-```json
-{
-    "alert_id": "ALT-a1b2c3d4",
-    "attack_type": "ddos",
-    "severity": "high",
-    "source_ip": "192.168.1.20",
-    "processed": false,
-    "evidence": {
-        "request_count": 5
-    }
-}
-```
-
----
-
-### FastAPI Backend
-
-Provides backend services for alert management and future dashboard integration.
-
----
-
-### Multi-Agent Investigation Pipeline
-
-Implemented using LangGraph.
-
-Agents:
-
-1. Coordinator Agent
-2. Log Agent
-3. IOC Agent
-4. Threat Agent
-5. Report Agent
-
----
-
-### Human Report Generation
-
-Creates analyst-friendly investigation reports.
-
-Example:
-
-```
-EDGE SOC INVESTIGATION REPORT
-
-Attack Type:
-ddos
-
-Severity:
-high
-
-Source IP:
-192.168.1.20
-
-Evidence Count:
-5
-
-MITRE ATT&CK:
-T1498 - Network Denial of Service
-```
-
----
-
-### AI Executive Summary
-
-Uses Ollama + Qwen 2.5 (1.5B) to generate executive summaries from investigation reports.
-
-Example:
-
-```
-A high-severity DDoS attack was identified from source IP
-192.168.1.20. The activity was mapped to MITRE ATT&CK
-T1498 (Network Denial of Service).
-```
-
----
-
-# Current Architecture
-
-```
-Logs
- ↓
-
+``` text
+Website
+   │
+   ▼
+website.log
+   │
+   ▼
+Checkpoint Manager
+   │
+   ▼
 Detection Engine
- ↓
-
-Alert JSON
- ↓
-
-Alert Loader
- ↓
-
+   │
+   ▼
+Alert Generator
+   │
+   ▼
+FastAPI Backend
+   │
+   ▼
 LangGraph Workflow
- ↓
-
-Coordinator Agent
- ↓
-
-Log Agent
- ↓
-
-IOC Agent
- ↓
-
-Threat Agent
- ↓
-
-Report Agent
- ↓
-
-Save Report Agent
- ↓
-
-Summary Agent
- ↓
-
-Final Investigation Report
+ ├── Coordinator Agent
+ ├── Log Agent
+ ├── IOC Agent
+ ├── Threat Agent
+ ├── Report Agent
+ └── Summary Agent
+   │
+   ▼
+Investigation Report
+   │
+   ▼
+Next.js Dashboard
 ```
 
----
+------------------------------------------------------------------------
+
+# Detection Workflow
+
+``` text
+User Login
+   ↓
+website.log
+   ↓
+Read only NEW logs (Checkpoint)
+   ↓
+Stateful Detection
+   ↓
+Alert JSON
+   ↓
+Automatic Investigation
+   ↓
+MITRE Mapping
+   ↓
+AI Executive Summary
+   ↓
+Incident Report
+   ↓
+Dashboard
+```
+
+------------------------------------------------------------------------
 
 # Project Structure
 
-```
-EdgeSOC
-│
-├── alerts/
-│
-├── logs/
-│
-├── monitor/
-│   ├── detector.py
-│   ├── parser.py
-│   └── alert_generator.py
-│
+``` text
+EdgeSOC/
+├── frontend/
 ├── backend/
-│   │
 │   ├── agents/
-│   │   ├── coordinator.py
-│   │   ├── log_agent.py
-│   │   ├── ioc_agent.py
-│   │   ├── threat_agent.py
-│   │   ├── report_agent.py
-│   │   └── summary_agent.py
-│   │
 │   ├── graph/
-│   │   └── workflow.py
-│   │
-│   ├── routes/
-│   │   └── alerts.py
-│   │
-│   ├── services/
-│   │   ├── alert_loader.py
-│   │   ├── alert_manager.py
-│   │   └── investigation_service.py
-│   │
-│   ├── reports/
-│   │   ├── report_builder.py
-│   │   └── generated/
-│   │
 │   ├── models/
-│   │   └── state.py
-│   │
+│   ├── reports/
+│   ├── routes/
+│   ├── services/
 │   └── main.py
-│
-└── README.md
+├── monitor/
+├── alerts/
+├── logs/
+├── state/
+├── README.md
+└── requirements.txt
 ```
 
----
+------------------------------------------------------------------------
 
-# LangGraph Workflow
+# Technology Stack
 
-```
-START
- ↓
+  Component         Technology
+  ----------------- -----------------------------------
+  Frontend          Next.js, TypeScript, Tailwind CSS
+  Backend           FastAPI
+  AI                Ollama + Llama 3.2 (1B)
+  Agent Framework   LangGraph
+  Detection         Python
+  Mapping           MITRE ATT&CK
 
-Coordinator Agent
- ↓
+------------------------------------------------------------------------
 
-Log Agent
- ↓
+# Installation
 
-IOC Agent
- ↓
+## Clone
 
-Threat Agent
- ↓
-
-Report Agent
- ↓
-
-Save Report Agent
- ↓
-
-Summary Agent
- ↓
-
-END
-```
-
----
-
-# Agent Responsibilities
-
-## Coordinator Agent
-
-Creates investigation plans.
-
-Input:
-
-* Alert
-
-Output:
-
-* Investigation Plan
-
----
-
-## Log Agent
-
-Collects relevant evidence from logs.
-
-Input:
-
-* Alert
-
-Output:
-
-* Relevant Log Entries
-
----
-
-## IOC Agent
-
-Extracts Indicators of Compromise (IOCs).
-
-Examples:
-
-* IP Addresses
-
-Output:
-
-* IOC List
-
----
-
-## Threat Agent
-
-Maps attacks to MITRE ATT&CK.
-
-Examples:
-
-| Attack Type   | MITRE Technique |
-| ------------- | --------------- |
-| SQL Injection | T1190           |
-| Brute Force   | T1110           |
-| DDoS          | T1498           |
-
----
-
-## Report Agent
-
-Builds structured investigation reports.
-
----
-
-## Summary Agent
-
-Uses Qwen 2.5 through Ollama to generate executive summaries.
-
----
-
-# Alert Lifecycle
-
-```
-Attack Detected
- ↓
-
-Alert Generated
- ↓
-
-processed = false
- ↓
-
-Investigation
- ↓
-
-Report Generated
- ↓
-
-processed = true
-```
-
----
-
-# Technologies Used
-
-## Backend
-
-* Python
-* FastAPI
-
-## Agent Framework
-
-* LangGraph
-
-## AI
-
-* Ollama
-* Qwen 2.5 1.5B
-
-## Future
-
-* PostgreSQL
-* Docker
-* NVIDIA Jetson Orin Nano
-* Next.js Dashboard
-
----
-
-# Planned Features
-
-* FastAPI investigation endpoints
-* Security dashboard
-* Real website attack monitoring
-* PostgreSQL storage
-* Docker deployment
-* NVIDIA Jetson deployment
-* Additional attack detection modules
-* Real-time monitoring
-
----
-
-# Project Goal
-
-Create a privacy-preserving, edge-deployable SOC assistant capable of automatically investigating cybersecurity alerts, correlating evidence, generating reports, and assisting analysts without relying on cloud infrastructure.
-
-
-
-
-# Getting Started
-
-## 1. Fork the Repository
-
-Click the **Fork** button on GitHub to create your own copy of the repository.
-
-Then clone it:
-
-```bash
-git clone <YOUR_FORK_URL>
-```
-
-Example:
-
-```bash
-git clone https://github.com/username/EdgeSOC.git
-```
-
-Move into the project:
-
-```bash
+``` bash
+git clone https://github.com/<your-username>/EdgeSOC.git
 cd EdgeSOC
 ```
 
----
+## Python Environment
 
-## 2. Create a Python Virtual Environment
+``` bash
+python -m venv venv
+```
 
 Windows:
 
-```bash
-python -m venv venv
+``` bash
 venv\Scripts\activate
 ```
 
-Linux / Mac:
+Linux/macOS:
 
-```bash
-python3 -m venv venv
+``` bash
 source venv/bin/activate
 ```
 
----
+## Install Python Dependencies
 
-## 3. Install Dependencies
-
-```bash
+``` bash
 pip install -r requirements.txt
 ```
 
-If requirements.txt is not available yet:
+If needed:
 
-```bash
-pip install fastapi
-pip install uvicorn
-pip install langgraph
-pip install langchain-core
-pip install requests
+``` bash
+pip install fastapi uvicorn requests langgraph langchain-core
 ```
 
----
+## Install Frontend
 
-## 4. Install Ollama
-
-Download and install Ollama from:
-
-https://ollama.com
-
-Verify installation:
-
-```bash
-ollama --version
+``` bash
+cd frontend
+npm install
 ```
 
----
+## Install Ollama
 
-## 5. Download the AI Model
-
-```bash
-ollama pull qwen2.5:1.5b
-```
-
-Verify model:
-
-```bash
-ollama list
-```
-
----
-
-## 6. Project Folder Setup
-
-Ensure these folders exist:
-
-```text
-alerts/
-logs/
-
-backend/reports/generated/
-```
-
-Create them if necessary.
-
----
-
-## 7. Run the Detection Engine
-
-```bash
-python monitor/detector.py
-```
-
-This generates alert files inside:
-
-```text
-alerts/
-```
-
----
-
-## 8. Start FastAPI Backend
-
-```bash
-uvicorn backend.main:app --reload
-```
+Install Ollama from https://ollama.com
 
 Verify:
 
-```text
-http://127.0.0.1:8000
+``` bash
+ollama --version
 ```
 
-Expected response:
+Download the model:
 
-```json
-{
-  "message": "EdgeSOC Running"
-}
+``` bash
+ollama pull llama3.2:1b
 ```
 
----
+------------------------------------------------------------------------
 
-## 9. Run the Investigation Workflow
+# Running EdgeSOC
 
-```bash
-python -m backend.graph.workflow
+## 1. Start FastAPI
+
+``` bash
+uvicorn backend.main:app --reload
 ```
 
-This will:
+## 2. Start Dashboard
 
-1. Load unprocessed alerts
-2. Execute LangGraph workflow
-3. Investigate alerts
-4. Generate reports
-5. Save reports
-6. Mark alerts as processed
-
----
-
-## 10. Generated Reports
-
-Reports are automatically saved inside:
-
-```text
-backend/reports/generated/
+``` bash
+cd frontend
+npm run dev
 ```
 
-Example:
+Dashboard:
 
-```text
-report_brute_force_a4b8c9.txt
-
-report_sql_injection_b2f1d7.txt
-
-report_ddos_f8e2a1.txt
+``` text
+http://localhost:3000
 ```
 
----
+API:
 
-## 11. Git Workflow for Team Members
-
-Before starting work:
-
-```bash
-git pull origin main
+``` text
+http://localhost:8000
 ```
 
-Create a feature branch:
+------------------------------------------------------------------------
 
-```bash
-git checkout -b feature/<feature-name>
+# Alert Lifecycle
+
+``` text
+Attack
+  ↓
+Alert Generated
+  ↓
+Investigation
+  ↓
+MITRE Mapping
+  ↓
+Executive Summary
+  ↓
+Report Saved
+  ↓
+Alert Processed
+  ↓
+Detection State Reset
 ```
 
-Example:
+------------------------------------------------------------------------
 
-```bash
-git checkout -b feature/dashboard
-```
+# Dashboard Modules
 
-Commit changes:
+-   Dashboard
+-   Alerts
+-   Reports
+-   Health Monitoring
 
-```bash
-git add .
-git commit -m "Implemented dashboard alerts page"
-```
+------------------------------------------------------------------------
 
-Push:
+# Scalability
 
-```bash
-git push origin feature/dashboard
-```
+EdgeSOC is designed with scalability in mind:
 
-Create a Pull Request on GitHub.
+-   Incremental log processing using checkpoints
+-   Persistent detection state
+-   Modular agent architecture
+-   FastAPI service-based backend
+-   Ready for Kafka/RabbitMQ integration
+-   Suitable for NVIDIA Jetson Orin Nano deployment
 
----
+------------------------------------------------------------------------
 
-## Current Workflow
+# Future Roadmap
 
-```text
-Logs
- ↓
+-   Kafka/RabbitMQ integration
+-   PostgreSQL persistence
+-   Docker deployment
+-   Edge deployment on NVIDIA Jetson
+-   Additional attack modules
+-   SIEM integration
 
-Detector
- ↓
+------------------------------------------------------------------------
 
-Alert JSON
- ↓
+# Contributing
 
-Alert Loader
- ↓
+1.  Fork the repository.
+2.  Create a feature branch.
+3.  Commit changes.
+4.  Push your branch.
+5.  Open a Pull Request.
 
-LangGraph
- ↓
+------------------------------------------------------------------------
 
-Coordinator Agent
- ↓
+# Troubleshooting
 
-Log Agent
- ↓
+-   Ensure Ollama is running before investigation.
+-   Pull the Llama model with `ollama pull llama3.2:1b`.
+-   Verify FastAPI is running on port 8000.
+-   Verify the Next.js dashboard is running on port 3000.
 
-IOC Agent
- ↓
+------------------------------------------------------------------------
 
-Threat Agent
- ↓
+# License
 
-Report Agent
- ↓
+MIT License.
 
-Summary Agent
- ↓
+------------------------------------------------------------------------
 
-Saved Investigation Report
-```
+# Acknowledgements
+
+Built as an academic cybersecurity research project demonstrating
+autonomous incident detection and investigation using multi-agent AI
+workflows.
