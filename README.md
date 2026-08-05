@@ -16,6 +16,12 @@ attacks to the MITRE ATT&CK framework, generates AI-powered executive
 summaries using **Llama 3.2 (1B)** running locally with Ollama, and
 presents the results through a modern Next.js dashboard.
 
+## 🎥 Project Demo
+
+Watch the demo here:
+
+https://www.youtube.com/watch?v=9uG7pbCuJwI
+
 ------------------------------------------------------------------------
 
 # Features
