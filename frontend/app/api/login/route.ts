@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
-import { exec } from "child_process";
+import { appendToWebsiteLog } from "../../../lib/serverPaths";
+import { API_BASE_URL } from "../../../lib/config";
 
 export async function POST(request: Request) {
 
@@ -9,36 +8,26 @@ export async function POST(request: Request) {
 
   const { username } = body;
 
-  const logPath = path.join(
-    process.cwd(),
-    "..",
-    "logs",
-    "website.log"
-  );
-
   const logEntry =
     `[${new Date().toISOString()}] LOGIN_FAILED ip=127.0.0.1 username=${username}\n`;
 
-  fs.appendFileSync(
-    logPath,
-    logEntry
-  );
+  appendToWebsiteLog(logEntry);
 
   // Run detector automatically
- try {
+  try {
 
     await fetch(
-        "http://127.0.0.1:8000/detect",
-        {
-            method: "POST"
-        }
+      `${API_BASE_URL}/detect`,
+      {
+        method: "POST"
+      }
     );
 
-} catch (err) {
+  } catch (err) {
 
     console.error(err);
 
-}
+  }
 
   return NextResponse.json({
     success: true

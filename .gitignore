@@ -1,0 +1,17 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# Runtime-generated (auto-created by config.ensure_directories() on startup)
+logs/
+state/
+alerts/
+backend/reports/generated/
+
+# Node
+frontend/node_modules/
+frontend/.next/

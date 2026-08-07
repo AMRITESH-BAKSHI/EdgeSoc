@@ -1,16 +1,9 @@
-import os
-from datetime import datetime
 import uuid
 
-BASE_DIR = os.path.dirname(
-    os.path.abspath(__file__)
-)
+from config import REPORTS_DIR
 
-REPORTS_DIR = os.path.join(
-    BASE_DIR,
-    "generated"
-)
-def build_human_report(report,summary):
+
+def build_human_report(report, summary):
 
     report_text = f"""
 ====================================
@@ -50,19 +43,14 @@ MITRE ATT&CK:
 
     return report_text
 
-def save_report(report_text,attack_type):
 
-    os.makedirs(
-        REPORTS_DIR,
-        exist_ok=True
-    )
+def save_report(report_text, attack_type):
+
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
     report_id = uuid.uuid4().hex[:8]
 
-    filename = os.path.join(
-        REPORTS_DIR,
-        f"report_{attack_type}_{report_id}.txt"
-    )
+    filename = REPORTS_DIR / f"report_{attack_type}_{report_id}.txt"
 
     with open(
         filename,
@@ -75,4 +63,4 @@ def save_report(report_text,attack_type):
         f"[REPORT SAVED] {filename}"
     )
 
-    return filename
+    return str(filename)

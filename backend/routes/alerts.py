@@ -1,7 +1,8 @@
 import json
-import os
 
 from fastapi import APIRouter
+
+from config import ALERTS_DIR
 
 router = APIRouter()
 
@@ -11,19 +12,14 @@ def get_alerts():
 
     alerts = []
 
-    if not os.path.exists("alerts"):
+    if not ALERTS_DIR.exists():
         return alerts
 
-    for filename in os.listdir("alerts"):
+    for filename in sorted(ALERTS_DIR.iterdir()):
 
-        if filename.endswith(".json"):
+        if filename.suffix == ".json":
 
-            filepath = os.path.join(
-                "alerts",
-                filename
-            )
-
-            with open(filepath, "r") as f:
+            with open(filename, "r") as f:
                 alerts.append(
                     json.load(f)
                 )

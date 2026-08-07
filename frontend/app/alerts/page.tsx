@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import Sidebar from '../../components/Sidebar'; 
+import Sidebar from '../../components/Sidebar';
+import { API_BASE_URL } from '../../lib/config';
 
 interface Alert {
   alert_id: string;
@@ -20,7 +21,7 @@ export default function AlertsPage() {
   const pathname = usePathname();
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/alerts')
+    fetch(API_BASE_URL + '/alerts')
       .then((res) => res.json())
       .then((data) => {
         setAlerts(data);
