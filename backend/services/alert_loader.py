@@ -1,28 +1,22 @@
 import json
-import os
+
+from config import ALERTS_DIR
 
 
 def load_unprocessed_alerts():
 
     alerts = []
 
-    alerts_dir = "alerts"
-
-    if not os.path.exists(alerts_dir):
+    if not ALERTS_DIR.exists():
         return alerts
 
-    for filename in os.listdir(alerts_dir):
+    for filename in sorted(ALERTS_DIR.iterdir()):
 
-        if not filename.endswith(".json"):
+        if filename.suffix != ".json":
             continue
 
-        filepath = os.path.join(
-            alerts_dir,
-            filename
-        )
-
         with open(
-            filepath,
+            filename,
             "r",
             encoding="utf-8"
         ) as f:
@@ -35,7 +29,7 @@ def load_unprocessed_alerts():
         ):
             alerts.append(
                 (
-                    filepath,
+                    str(filename),
                     alert
                 )
             )

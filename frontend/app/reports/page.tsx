@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../../components/Sidebar'; 
+import Sidebar from '../../components/Sidebar';
+import { API_BASE_URL } from '../../lib/config';
 
 interface ReportItem {
   filename: string;
@@ -16,7 +17,7 @@ export default function ReportsPage() {
 
   // 1. Fetch the list of available text files on load
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/reports')
+    fetch(API_BASE_URL + '/reports')
       .then(res => res.json())
       .then((data: ReportItem[]) => {
         setReportsList(data);
@@ -34,7 +35,7 @@ export default function ReportsPage() {
     setReportContent('');
     
     try {
-      const res = await fetch(`http://127.0.0.1:8000/reports/${filename}`);
+      const res = await fetch(`${API_BASE_URL}/reports/${filename}`);
       const data = await res.json();
       if (data.error) {
         setReportContent(data.error);

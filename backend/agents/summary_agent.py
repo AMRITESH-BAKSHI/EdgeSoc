@@ -1,6 +1,6 @@
 import requests
 
-OLLAMA_URL = "http://localhost:11434/api/chat"
+from config import OLLAMA_URL, MODEL_NAME
 
 
 def generate_summary(report):
@@ -36,7 +36,7 @@ MITRE Technique Name: {report['mitre']['technique_name']}
     ]
 
     payload = {
-        "model": "llama3.2:1b",
+        "model": MODEL_NAME,
         "messages": messages,
         "stream": False,
         "options": {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "../lib/config";
 
 export default function HealthMonitor() {
   const [health, setHealth] = useState({
@@ -12,7 +13,7 @@ export default function HealthMonitor() {
   useEffect(() => {
     const fetchHealth = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/health-status");
+        const res = await fetch(API_BASE_URL + "/health-status");
         const data = await res.json();
         setHealth(data);
       } catch (error) {

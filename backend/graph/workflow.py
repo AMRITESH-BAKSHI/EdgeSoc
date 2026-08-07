@@ -1,5 +1,6 @@
 from langgraph.graph import StateGraph, END
 
+from config import LOG_FILE
 from backend.models.state import InvestigationState
 
 from backend.agents.coordinator import create_investigation_plan
@@ -32,7 +33,7 @@ def log_node(state: InvestigationState):
 
     evidence = collect_relevant_logs(
         state["alert"],
-        "logs/website.log"
+        LOG_FILE
     )
 
     return {

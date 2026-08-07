@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Sidebar from '../components/Sidebar';
+import { API_BASE_URL } from '../lib/config';
 
 interface Alert {
   alert_id: string;
@@ -28,7 +29,7 @@ export default function EdgeSocDashboard() {
   const pathname = usePathname();
   useEffect(() => {
     const fetchAlerts = () => {
-      fetch('http://127.0.0.1:8000/alerts')
+      fetch(API_BASE_URL + '/alerts')
         .then((res) => res.json())
         .then((data: Alert[]) => {
           setAlerts(data);
@@ -39,7 +40,7 @@ export default function EdgeSocDashboard() {
 
     const fetchHealth = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/health-status');
+        const res = await fetch(API_BASE_URL + '/health-status');
         const data = await res.json();
         setHealth(data);
       } catch {
@@ -61,10 +62,10 @@ export default function EdgeSocDashboard() {
   const triggerInvestigation = async () => {
     setIsInvestigating(true);
     try {
-      const res = await fetch('http://127.0.0.1:8000/investigate');
+      const res = await fetch(API_BASE_URL + '/investigate');
       const data = await res.json();
       setStatusMessage(`Success: ${data.processed_alerts} alerts processed.`);
-      const updated = await fetch('http://127.0.0.1:8000/alerts').then((r) => r.json());
+      const updated = await fetch(API_BASE_URL + '/alerts').then((r) => r.json());
       setAlerts(updated);
     } catch {
       setStatusMessage('Error: Failed to connect to engine.');
@@ -77,7 +78,7 @@ export default function EdgeSocDashboard() {
     setHealth({ status: 'CHECKING', latency_ms: 0 });
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/health-status');
+      const res = await fetch(API_BASE_URL + '/health-status');
       const data = await res.json();
       // 2. Add a tiny 600ms delay so the user actually sees the "CHECKING" animation
       setTimeout(() => setHealth(data), 600);
