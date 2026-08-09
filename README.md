@@ -180,7 +180,33 @@ pip install fastapi uvicorn requests langgraph langchain-core
 ``` bash
 cd frontend
 npm install
+cp .env.example .env.local
 ```
+
+Edit `frontend/.env.local` depending on your deployment target:
+
+**Native deployment (e.g. directly on the Jetson, browser on the same LAN):**
+``` env
+NEXT_PUBLIC_API_URL=http://<jetson-ip>:8000
+NEXT_PUBLIC_BASE_PATH=
+```
+
+**Behind a sub-path proxy (e.g. CloudLab / JupyterLab's `jupyter_server_proxy`,
+which serves this app under `/proxy/3000/`):** leave `NEXT_PUBLIC_API_URL`
+unset so the app uses the same-origin `/api/backend` proxy route instead of
+trying to reach the backend's own port directly (which usually isn't
+exposed in this kind of environment):
+``` env
+# NEXT_PUBLIC_API_URL=            <- leave unset / commented out
+NEXT_PUBLIC_BASE_PATH=/proxy/3000
+BACKEND_INTERNAL_URL=http://127.0.0.1:8000
+```
+
+> **Important:** `NEXT_PUBLIC_*` values (and `BACKEND_INTERNAL_URL`, used
+> inside `next.config.ts`'s `rewrites()`) are all baked in at **build**
+> time. If any of these change after deployment, you must run
+> `npm run build` again - editing `.env.local` and restarting
+> `npm run start` alone will **not** pick up the new values.
 
 ## Install Ollama
 

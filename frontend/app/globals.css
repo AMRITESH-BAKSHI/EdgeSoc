@@ -24,3 +24,28 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Thin, dark scrollbar used across dashboard/alerts panels
+   (referenced via className="custom-scrollbar") */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #0a0a0b;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #27272a;
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #3f3f46;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #27272a #0a0a0b;
+}

@@ -17,6 +17,7 @@ export default function HealthMonitor() {
         const data = await res.json();
         setHealth(data);
       } catch (error) {
+        console.error("Health check failed:", error);
         setHealth({ status: "DOWN", status_code: 0, latency_ms: 0 });
       }
     };

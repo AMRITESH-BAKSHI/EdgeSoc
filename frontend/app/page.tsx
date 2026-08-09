@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 import Sidebar from '../components/Sidebar';
 import { API_BASE_URL } from '../lib/config';
 
@@ -26,7 +25,7 @@ export default function EdgeSocDashboard() {
   const [loading, setLoading] = useState(true);
   const [isInvestigating, setIsInvestigating] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
-  const pathname = usePathname();
+  const [sortBy, setSortBy] = useState('newest');
   useEffect(() => {
     const fetchAlerts = () => {
       fetch(API_BASE_URL + '/alerts')
@@ -105,6 +104,37 @@ export default function EdgeSocDashboard() {
   const sqliCount = alerts.filter(a => a.attack_type === 'sql_injection').length;
   const bruteCount = alerts.filter(a => a.attack_type === 'brute_force').length;
   const threatCapacity = Math.min(100, Math.round((totalThreatScore / 20) * 100));
+
+  const sortedAlerts = [...alerts].sort((a, b) => {
+  switch (sortBy) {
+    case 'newest':
+      return new Date(b.timestamp || 0).getTime() -
+             new Date(a.timestamp || 0).getTime();
+
+    case 'oldest':
+      return new Date(a.timestamp || 0).getTime() -
+             new Date(b.timestamp || 0).getTime();
+
+    case 'severity': {
+      const severityRank = {
+        high: 3,
+        medium: 2,
+        low: 1,
+      };
+
+      return severityRank[b.severity] - severityRank[a.severity];
+    }
+
+    case 'type':
+      return a.attack_type.localeCompare(b.attack_type);
+
+    case 'ip':
+      return a.source_ip.localeCompare(b.source_ip);
+
+    default:
+      return 0;
+  }
+});
 
   return (
     <div className="flex h-screen bg-[#0a0a0b] text-[#a1a1aa] font-sans antialiased overflow-hidden selection:bg-[#ff4500] selection:text-white">
@@ -251,7 +281,17 @@ export default function EdgeSocDashboard() {
             <div className="bg-[#111113] border border-[#1f1f22] rounded-xl p-0 shadow-lg h-full overflow-hidden flex flex-col">
               <div className="p-5 border-b border-[#1f1f22] flex justify-between items-center">
                 <h3 className="text-white text-sm font-medium">Network Entities & Alerts</h3>
-                <span className="text-xs text-[#71717a] cursor-pointer hover:text-white">Sort by ▾</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="bg-[#0a0a0b] border border-[#27272a] rounded-md px-3 py-1.5 text-xs text-[#a1a1aa] outline-none cursor-pointer hover:border-[#3f3f46] focus:border-[#ff4500]"
+                >
+                  <option value="newest">Newest</option>
+                  <option value="oldest">Oldest</option>
+                  <option value="severity">Severity</option>
+                  <option value="type">Attack Type</option>
+                  <option value="ip">Source IP</option>
+                </select>
               </div>
 
               <div className="overflow-y-auto flex-1">
@@ -262,16 +302,17 @@ export default function EdgeSocDashboard() {
                       <th className="px-5 py-3 font-medium">TYPE</th>
                       <th className="px-5 py-3 font-medium">SEVERITY</th>
                       <th className="px-5 py-3 font-medium">IP / HEX</th>
+                      <th className="px-5 py-3 font-medium">TIMESTAMP</th>
                       <th className="px-5 py-3 font-medium">STATUS</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#1f1f22]">
                     {loading ? (
-                      <tr><td colSpan={5} className="text-center py-8 text-[#71717a]">Syncing telemetry...</td></tr>
+                      <tr><td colSpan={6} className="text-center py-8 text-[#71717a]">Syncing telemetry...</td></tr>
                     ) : alerts.length === 0 ? (
-                      <tr><td colSpan={5} className="text-center py-8 text-[#71717a]">No incidents detected. System secure.</td></tr>
+                      <tr><td colSpan={6} className="text-center py-8 text-[#71717a]">No incidents detected. System secure.</td></tr>
                     ) : (
-                      alerts.map((alert) => (
+                      sortedAlerts.map((alert) => (
                         <tr key={alert.alert_id} className="hover:bg-[#1a1a1e] transition group">
                           <td className="px-5 py-4 text-[#a1a1aa] font-mono text-xs">{alert.alert_id.substring(0, 8)}...</td>
                           <td className="px-5 py-4 text-white capitalize">{alert.attack_type.replace('_', ' ')}</td>
@@ -283,7 +324,16 @@ export default function EdgeSocDashboard() {
                               {alert.severity.toUpperCase()}
                             </span>
                           </td>
-                          <td className="px-5 py-4 text-[#a1a1aa] font-mono text-xs">{alert.source_ip}</td>
+                          <td className="px-5 py-4 text-[#a1a1aa] font-mono text-xs">
+                            {alert.source_ip}
+                          </td>
+
+                          <td className="px-5 py-4 text-[#71717a] font-mono text-xs whitespace-nowrap">
+                            {alert.timestamp
+                              ? new Date(alert.timestamp).toLocaleString()
+                              : '—'}
+                          </td>
+
                           <td className="px-5 py-4">
                             <span className={`px-2 py-1 rounded text-[10px] font-medium tracking-wider ${alert.processed
                               ? 'bg-[#1a1a1e] text-[#a1a1aa] border border-[#27272a]'

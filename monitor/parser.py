@@ -18,24 +18,60 @@ def extract_ip(line):
 
 def extract_timestamp(line):
     """
-    Extract timestamp from:
+    Extract timestamp from log lines such as:
+
+    [2026-08-08T09:29:53.607Z]
+
+    Also supports the older format:
+
     [2026-06-06 10:00:00]
 
-    Returns datetime object or None.
+    Returns a datetime object or None.
     """
 
     match = re.search(
-        r"\[(.*?)\]",
+        r"\[([^\]]+)\]",
         line
     )
 
     if not match:
         return None
 
+    timestamp = match.group(1)
+
+    # Current website log format:
+    # 2026-08-08T09:29:53.607Z
+    try:
+        return datetime.fromisoformat(
+            timestamp.replace("Z", "+00:00")
+        )
+    except ValueError:
+        pass
+
+    # Older log format:
+    # 2026-06-06 10:00:00
     try:
         return datetime.strptime(
-            match.group(1),
+            timestamp,
             "%Y-%m-%d %H:%M:%S"
         )
     except ValueError:
         return None
+
+
+def extract_username(line):
+    """
+    Extract username from a log line.
+
+    Example:
+    username=randomperson.lucky@gmail.com
+
+    Returns the username string or None.
+    """
+
+    match = re.search(
+        r"\busername=(\S+)",
+        line
+    )
+
+    return match.group(1) if match else None

@@ -23,7 +23,7 @@ from monitor.rules import (
     BRUTE_FORCE_THRESHOLD,
 )
 
-from monitor.parser import extract_ip
+from monitor.parser import extract_ip, extract_timestamp, extract_username
 from monitor.alert_generator import generate_alert
 
 # -------------------------------------------------
@@ -65,6 +65,24 @@ def read_logs():
     return new_logs
 
 
+def _line_timestamp_iso(line):
+    """
+    Extracts a timestamp from a raw log line and returns it as an ISO
+    8601 string (JSON-serializable), or None if the line has no
+    parseable timestamp. Falls back to "now" so alerts are never left
+    with a null timestamp (which would break the frontend's sort-by-time
+    and timestamp column).
+    """
+
+    dt = extract_timestamp(line)
+
+    if dt is None:
+        from datetime import datetime, timezone
+        dt = datetime.now(timezone.utc)
+
+    return dt.isoformat()
+
+
 # -------------------------------------------------
 # SQL Injection Detection
 # -------------------------------------------------
@@ -83,8 +101,10 @@ def detect_sql_injection(logs):
                 generate_alert(
                     attack_type="sql_injection",
                     severity="high",
-                    source_ip="unknown",
+                    source_ip=extract_ip(line) or "unknown",
                     evidence={"matched_pattern": pattern, "log_line": line.strip()},
+                    timestamp=_line_timestamp_iso(line),
+                    username=extract_username(line),
                 )
 
                 return True
@@ -125,6 +145,8 @@ def detect_brute_force(logs):
                 severity="medium",
                 source_ip=ip,
                 evidence={"failed_attempts": failed_logins[ip]},
+                timestamp=_line_timestamp_iso(line),
+                username=extract_username(line),
             )
 
             active_alerts[ip] = True
@@ -153,6 +175,9 @@ def detect_ddos(logs):
     ddos_active_alerts = state.setdefault("ddos_active_alerts", {})
 
     ips_seen = set()
+    # Remember one raw line per IP so we can extract a real timestamp
+    # for the alert instead of only using time.time().
+    last_line_for_ip = {}
 
     for line in logs:
 
@@ -165,7 +190,7 @@ def detect_ddos(logs):
             continue
 
         ips_seen.add(ip)
-
+        last_line_for_ip[ip] = line
         ddos_requests.setdefault(ip, []).append(now)
 
     triggered = False
@@ -190,6 +215,8 @@ def detect_ddos(logs):
                     "request_count": count,
                     "time_window_seconds": DDOS_TIME_WINDOW,
                 },
+                timestamp=_line_timestamp_iso(last_line_for_ip[ip]),
+                username=extract_username(last_line_for_ip[ip]),
             )
 
             ddos_active_alerts[ip] = True
@@ -225,4 +252,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
